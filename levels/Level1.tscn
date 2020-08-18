@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://tileset/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://levels/Level1.gd" type="Script" id=3]
+[ext_resource path="res://assets/colored_transparent_packed.png" type="Texture" id=4]
+
+[node name="Level1" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Ground" type="ColorRect" parent="."]
+margin_left = -80.0
+margin_right = 272.0
+margin_bottom = 224.0
+color = Color( 0.27451, 0.176471, 0.235294, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Walls" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 196609, 4, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 196615, 0, 0, 196616, 0, 0, 196617, 0, 0, 196618, 6, 0, 262145, 3, 0, 262146, 10, 0, 262147, 10, 0, 262148, 10, 0, 262149, 10, 0, 262150, 10, 0, 262151, 10, 0, 262152, 10, 0, 262154, 1, 0, 327681, 3, 0, 327688, 14, 0, 327690, 1, 0, 393217, 3, 0, 393224, 14, 0, 393226, 1, 0, 458753, 3, 0, 458760, 14, 0, 458762, 1, 0, 524289, 3, 0, 524296, 14, 0, 524298, 1, 0, 589825, 3, 0, 589834, 1, 0, 655361, 3, 0, 655370, 1, 0, 720897, 3, 0, 720906, 1, 0, 786433, 5, 0, 786434, 2, 0, 786435, 2, 0, 786436, 2, 0, 786437, 2, 0, 786438, 2, 0, 786439, 2, 0, 786440, 2, 0, 786441, 2, 0, 786442, 7, 0 )
+
+[node name="Interactive" type="TileMap" parent="." groups=[
+"interactable",
+]]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 327688, 20, 0, 393224, 16, 0, 458760, 18, 0, 524296, 15, 0, 589832, 8, 0 )
+
+[node name="Items" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 589827, 28, 0 )
+
+[node name="Cursor" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 560, 192, 16, 16 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -1 )
+[connection signal="targeted" from="Player" to="." method="_on_Player_targeted"]
+[connection signal="untargeted" from="Player" to="." method="_on_Player_untargeted"]
