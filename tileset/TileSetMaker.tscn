@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/colored_transparent_packed.png" type="Texture" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
 
 [node name="TileSetMaker" type="Node2D"]
 
@@ -127,8 +130,8 @@ __meta__ = {
 
 [node name="StaticBody2D" type="StaticBody2D" parent="garbage_bin"]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="garbage_bin/StaticBody2D"]
-polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8, -8, 8 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="garbage_bin/StaticBody2D"]
+shape = SubResource( 1 )
 
 [node name="sink" type="Sprite" parent="."]
 position = Vector2( 88, 8 )
@@ -209,11 +212,6 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="StaticBody2D" type="StaticBody2D" parent="food_crate"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="food_crate/StaticBody2D"]
-polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8, -8, 8 )
-
 [node name="cheese" type="Sprite" parent="."]
 position = Vector2( 152, 8 )
 texture = ExtResource( 1 )
@@ -223,53 +221,13 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="meat_cooked" type="Sprite" parent="."]
-position = Vector2( 168, 8 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 528, 256, 16, 16 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="StaticBody2D" type="StaticBody2D" parent="cheese"]
 
-[node name="meat_raw" type="Sprite" parent="."]
-position = Vector2( 184, 8 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 544, 304, 16, 16 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="egg" type="Sprite" parent="."]
-position = Vector2( 200, 8 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 544, 272, 16, 16 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="apple" type="Sprite" parent="."]
-position = Vector2( 200, 24 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 528, 288, 16, 16 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="carrot" type="Sprite" parent="."]
-position = Vector2( 184, 24 )
-texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 544, 320, 16, 16 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="cheese/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
 
 [node name="pear" type="Sprite" parent="."]
-position = Vector2( 168, 24 )
+position = Vector2( 168, 8 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 544, 288, 16, 16 )
@@ -277,14 +235,66 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="fish" type="Sprite" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="pear"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="pear/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
+
+[node name="apple" type="Sprite" parent="."]
+position = Vector2( 184, 8 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 528, 288, 16, 16 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="apple"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="apple/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
+
+[node name="meat_raw" type="Sprite" parent="."]
 position = Vector2( 152, 24 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 544, 304, 16, 16 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="meat_raw"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="meat_raw/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
+
+[node name="fish" type="Sprite" parent="."]
+position = Vector2( 168, 24 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 528, 272, 16, 16 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="StaticBody2D" type="StaticBody2D" parent="fish"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="fish/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
+
+[node name="egg" type="Sprite" parent="."]
+position = Vector2( 184, 24 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 544, 272, 16, 16 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="egg"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="egg/StaticBody2D"]
+polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
 
 [node name="exclaimation" type="Sprite" parent="."]
 position = Vector2( 232, 8 )

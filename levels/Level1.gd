@@ -1,11 +1,12 @@
 extends Node2D
 
 onready var items = $Items
+onready var interactive = $Interactive
 
 func _ready():
 	$Items.hide()
 	spawn_player()
-	
+
 func spawn_player():
 	for cell in items.get_used_cells():
 		var id = items.get_cellv(cell)
@@ -17,3 +18,11 @@ func spawn_player():
 			'player_spawn':
 				$Player.position = pos
 				$Player.tile_size = items.cell_size
+
+func _on_Player_targeted(target: Vector2, adjustment: Vector2):
+	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
+	$Cursor.show()
+
+
+func _on_Player_untargeted():
+	$Cursor.hide()

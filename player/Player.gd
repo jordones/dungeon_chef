@@ -1,11 +1,17 @@
 extends Area2D
 
 signal moved
+signal targeted
+signal untargeted
 
 var speed = 3
 var tile_size = 16
 var can_move = true
+var can_interact = true
+var is_holding = false
+var held_food_type
 var facing = 'right'
+var heldItem
 var moves = {
 	'right': Vector2(1, 0),
 	'left': Vector2(-1, 0),
@@ -26,9 +32,13 @@ func _process(delta):
 			if Input.is_action_pressed(dir):
 				if move(dir):
 					emit_signal('moved')
+	if can_interact:
+		if Input.is_action_pressed("primary_action"):
+			interact()
 
 func move(dir: String) -> bool:
 	facing = dir
+	update_cursor()	
 	if raycasts[facing].is_colliding():
 		return false
 	
@@ -45,7 +55,51 @@ func move(dir: String) -> bool:
 	$MoveTween.start()
 	return true
 
-
+func update_cursor():
+	if raycasts[facing].is_colliding():
+		var colliding_object = raycasts[facing].get_collider()
+		if (colliding_object.is_in_group("interactable")):
+			# Fix for bug where the world point is the wrong co-ordinates
+			# for left/up raycasts
+			var safe_margin = 1.0
+			var point = raycasts[facing].get_collision_point() - raycasts[facing].get_collision_normal() * safe_margin
+			var tile_pos = colliding_object.world_to_map(point)
+			emit_signal('targeted', tile_pos)
+	else:
+		emit_signal('untargeted')
+	
+func interact() -> bool:
+	if raycasts[facing].is_colliding():
+		var colliding_object = raycasts[facing].get_collider()
+		print("player hit something")
+		if (colliding_object.is_in_group("interactable")):
+			var hit_pos = raycasts[facing].get_collision_point()
+			var safe_margin = 1.0
+			var point = raycasts[facing].get_collision_point() - raycasts[facing].get_collision_normal() * safe_margin
+			print("hit pos" + str(hit_pos))
+			var tile_pos = colliding_object.world_to_map(point)
+			print("tile pos" + str(tile_pos))
+			var tile_id = colliding_object.get_cellv(tile_pos)
+			print("tile id" + str(tile_id))
+			var type = colliding_object.tile_set.tile_get_name(tile_id)
+			print("player clicked: " + str(type))
+			match type:
+				'cheese', 'pear', 'meat_raw', 'apple', 'fish', 'egg':
+					if is_holding:
+						return false
+					$HeldItem.set("texture", colliding_object.tile_set.tile_get_texture(tile_id))
+					$HeldItem.region_rect = colliding_object.tile_set.tile_get_region(tile_id)
+					is_holding = true
+					held_food_type = type
+				'garbage_bin':
+					if is_holding:
+						is_holding = false
+						held_food_type = null
+						$HeldItem.set("texture", null)
+						
+		return true
+	print("player hit nothing")
+	return false
 
 func _on_MoveTween_tween_completed(object, key):
 	can_move = true
