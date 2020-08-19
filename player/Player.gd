@@ -3,6 +3,7 @@ extends Area2D
 signal moved
 signal targeted
 signal untargeted
+signal put
 
 var speed = 3
 var tile_size = 16
@@ -74,18 +75,13 @@ func update_cursor():
 func interact() -> bool:
 	if raycasts[facing].is_colliding():
 		var colliding_object = raycasts[facing].get_collider()
-		print("player hit something")
 		if (colliding_object.is_in_group("interactable")):
 			var hit_pos = raycasts[facing].get_collision_point()
 			var safe_margin = 1.0
 			var point = raycasts[facing].get_collision_point() - raycasts[facing].get_collision_normal() * safe_margin
-			print("hit pos" + str(hit_pos))
 			var tile_pos = colliding_object.world_to_map(point)
-			print("tile pos" + str(tile_pos))
 			var tile_id = colliding_object.get_cellv(tile_pos)
-			print("tile id" + str(tile_id))
 			var type = colliding_object.tile_set.tile_get_name(tile_id)
-			print("player clicked: " + str(type))
 			match type:
 				'cheese', 'pear', 'meat_raw', 'apple', 'fish', 'egg':
 					if is_holding:
@@ -96,6 +92,12 @@ func interact() -> bool:
 					held_food_type = type
 				'garbage_bin':
 					if is_holding:
+						is_holding = false
+						held_food_type = null
+						$HeldItem.set("texture", null)
+				'cauldron':
+					if is_holding:
+						emit_signal("put", held_food_type)
 						is_holding = false
 						held_food_type = null
 						$HeldItem.set("texture", null)

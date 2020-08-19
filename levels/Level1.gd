@@ -2,6 +2,7 @@ extends Node2D
 
 onready var items = $Items
 onready var interactive = $Interactive
+var cauldron = []
 
 func _ready():
 	$Items.hide()
@@ -28,3 +29,8 @@ func _on_Player_targeted(target: Vector2, label: String):
 func _on_Player_untargeted():
 	$Cursor.hide()
 	$UserInterface.set_message('')
+
+func _on_Player_put(item):
+	print('player deposited ' + str(item) + ' in the cauldron')
+	cauldron.append(item)
+	print(cauldron)
