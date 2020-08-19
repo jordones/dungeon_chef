@@ -62,9 +62,12 @@ func update_cursor():
 			# Fix for bug where the world point is the wrong co-ordinates
 			# for left/up raycasts
 			var safe_margin = 1.0
-			var point = raycasts[facing].get_collision_point() - raycasts[facing].get_collision_normal() * safe_margin
+			var collision_point = raycasts[facing].get_collision_point()
+			var point = collision_point - raycasts[facing].get_collision_normal() * safe_margin
 			var tile_pos = colliding_object.world_to_map(point)
-			emit_signal('targeted', tile_pos)
+			var id = colliding_object.get_cellv(tile_pos)
+			var type = colliding_object.tile_set.tile_get_name(id)
+			emit_signal('targeted', tile_pos, type)
 	else:
 		emit_signal('untargeted')
 	

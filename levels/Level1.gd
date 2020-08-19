@@ -19,10 +19,12 @@ func spawn_player():
 				$Player.position = pos
 				$Player.tile_size = items.cell_size
 
-func _on_Player_targeted(target: Vector2, adjustment: Vector2):
+func _on_Player_targeted(target: Vector2, label: String):
 	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
 	$Cursor.show()
+	$UserInterface.set_message(label)
 
 
 func _on_Player_untargeted():
 	$Cursor.hide()
+	$UserInterface.set_message('')
