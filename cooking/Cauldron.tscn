@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/colored_transparent_packed.png" type="Texture" id=1]
+[ext_resource path="res://cooking/Cauldron.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8 )
+
+[node name="Cauldron" type="Area2D"]
+position = Vector2( 28.9757, 21.0888 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="FireSprite" type="Sprite" parent="."]
+position = Vector2( 0, 4 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 224, 168, 16, 8 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 80, 224, 16, 16 )
+
+[node name="Bubbles" type="Sprite" parent="."]
+position = Vector2( 0, -1.75 )
+scale = Vector2( 0.01, 0.01 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 560, 176, 16, 16 )
+
+[node name="BubbleTween" type="Tween" parent="."]
+
+[node name="FireTweenIn" type="Tween" parent="."]
+
+[node name="FireTweenOut" type="Tween" parent="."]
+[connection signal="tween_all_completed" from="BubbleTween" to="." method="_on_BubbleTween_tween_all_completed"]
+[connection signal="tween_completed" from="FireTweenIn" to="." method="_on_FireTweenIn_tween_completed"]
+[connection signal="tween_completed" from="FireTweenOut" to="." method="_on_FireTweenOut_tween_completed"]
