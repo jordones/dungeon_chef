@@ -31,7 +31,7 @@ tile_data = PoolIntArray( 131073, 4, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 327688, 20, 0, 393224, 16, 0, 458760, 18, 0, 524296, 15, 0, 589832, 8, 0 )
+tile_data = PoolIntArray( 327688, 20, 0, 393224, 16, 0, 458757, 13, 0, 458760, 18, 0, 524296, 15, 0, 589832, 8, 0 )
 
 [node name="Items" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
@@ -39,18 +39,19 @@ cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 458757, 13, 0, 589827, 28, 0 )
 
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -1 )
+
+[node name="Cauldron" parent="." instance=ExtResource( 6 )]
+
 [node name="Cursor" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 560, 192, 16, 16 )
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, -1 )
-
-[node name="Cauldron" parent="." instance=ExtResource( 6 )]
-
 [node name="UserInterface" parent="." instance=ExtResource( 5 )]
 [connection signal="put" from="Player" to="." method="_on_Player_put"]
 [connection signal="targeted" from="Player" to="." method="_on_Player_targeted"]
 [connection signal="untargeted" from="Player" to="." method="_on_Player_untargeted"]
+[connection signal="stored_item" from="Cauldron" to="Player" method="_on_Cauldron_stored_item"]

@@ -98,9 +98,7 @@ func interact() -> bool:
 				'cauldron':
 					if is_holding:
 						emit_signal("put", held_food_type)
-						is_holding = false
-						held_food_type = null
-						$HeldItem.set("texture", null)
+
 						
 		return true
 	print("player hit nothing")
@@ -108,3 +106,10 @@ func interact() -> bool:
 
 func _on_MoveTween_tween_completed(object, key):
 	can_move = true
+
+
+func _on_Cauldron_stored_item(successful: bool):
+	if successful:
+		is_holding = false
+		held_food_type = null
+		$HeldItem.set("texture", null)

@@ -25,7 +25,12 @@ func spawn_objects():
 func _on_Player_targeted(target: Vector2, label: String):
 	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
 	$Cursor.show()
-	$UserInterface.set_message(label)
+	
+	if label == 'cauldron':
+		$UserInterface.set_message($Cauldron.print_contents())
+	else:
+		$UserInterface.set_message(label)
+
 
 
 func _on_Player_untargeted():
@@ -34,5 +39,7 @@ func _on_Player_untargeted():
 
 func _on_Player_put(item):
 	print('player deposited ' + str(item) + ' in the cauldron')
-	cauldron.append(item)
-	print(cauldron)
+	#cauldron.append(item)
+	$Cauldron.deposit_item(item)
+	$UserInterface.set_message($Cauldron.print_contents())
+	#print(cauldron)
