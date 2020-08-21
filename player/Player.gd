@@ -3,6 +3,8 @@ extends Area2D
 signal moved
 signal targeted
 signal untargeted
+signal put
+signal pick_up
 
 var speed = 3
 var tile_size = 16
@@ -74,18 +76,13 @@ func update_cursor():
 func interact() -> bool:
 	if raycasts[facing].is_colliding():
 		var colliding_object = raycasts[facing].get_collider()
-		print("player hit something")
 		if (colliding_object.is_in_group("interactable")):
 			var hit_pos = raycasts[facing].get_collision_point()
 			var safe_margin = 1.0
 			var point = raycasts[facing].get_collision_point() - raycasts[facing].get_collision_normal() * safe_margin
-			print("hit pos" + str(hit_pos))
 			var tile_pos = colliding_object.world_to_map(point)
-			print("tile pos" + str(tile_pos))
 			var tile_id = colliding_object.get_cellv(tile_pos)
-			print("tile id" + str(tile_id))
 			var type = colliding_object.tile_set.tile_get_name(tile_id)
-			print("player clicked: " + str(type))
 			match type:
 				'cheese', 'pear', 'meat_raw', 'apple', 'fish', 'egg':
 					if is_holding:
@@ -99,10 +96,34 @@ func interact() -> bool:
 						is_holding = false
 						held_food_type = null
 						$HeldItem.set("texture", null)
-						
+				'cauldron':
+					if is_holding:
+						if held_food_type == 'generic':
+							return false
+						emit_signal("put", held_food_type)
+					else:
+						emit_signal('pick_up')
 		return true
 	print("player hit nothing")
 	return false
 
+func pick_up(name, item) -> bool:
+	$HeldItem.set("texture", item.texture)
+	$HeldItem.set("region_rect", item.region_rect)
+	yield(get_tree().create_timer(.5), "timeout")
+	if is_holding:
+		return false
+	is_holding = true
+	held_food_type = name
+	return true
+
+
 func _on_MoveTween_tween_completed(object, key):
 	can_move = true
+
+
+func _on_Cauldron_stored_item(successful: bool):
+	if successful:
+		is_holding = false
+		held_food_type = null
+		$HeldItem.set("texture", null)
