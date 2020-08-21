@@ -7,7 +7,6 @@
 extents = Vector2( 8, 8 )
 
 [node name="Cauldron" type="Area2D"]
-position = Vector2( 28.9757, 21.0888 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -40,6 +39,16 @@ region_rect = Rect2( 560, 176, 16, 16 )
 [node name="FireTweenIn" type="Tween" parent="."]
 
 [node name="FireTweenOut" type="Tween" parent="."]
+
+[node name="CookedItem" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -3.5 )
+scale = Vector2( -0.5, -0.5 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 528, 256, 16, 16 )
+
+[node name="CookedItemTween" type="Tween" parent="."]
 [connection signal="tween_all_completed" from="BubbleTween" to="." method="_on_BubbleTween_tween_all_completed"]
 [connection signal="tween_completed" from="FireTweenIn" to="." method="_on_FireTweenIn_tween_completed"]
 [connection signal="tween_completed" from="FireTweenOut" to="." method="_on_FireTweenOut_tween_completed"]

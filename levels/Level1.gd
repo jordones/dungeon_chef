@@ -43,3 +43,13 @@ func _on_Player_put(item):
 	$Cauldron.deposit_item(item)
 	$UserInterface.set_message($Cauldron.print_contents())
 	#print(cauldron)
+
+
+func _on_Player_pick_up():
+	var temp_item = $Cauldron.take_item()
+	if temp_item:
+		$Player.pick_up(temp_item[0], temp_item[1])
+
+
+func _on_Cauldron_cooking_done():
+	$UserInterface.set_message($Cauldron.print_contents())

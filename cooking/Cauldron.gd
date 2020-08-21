@@ -1,12 +1,28 @@
 extends Area2D
 
 signal stored_item
+signal cooking_done
 
 var container = []
 var container_size: int = 4
 var is_cooking: bool = false
+var has_cooked_item: bool = false
+var cooked_item: String
+
+func _process(delta):
+	if _is_full():
+		_finish_cooking()
 
 ### Functionality, pubic
+func take_item():
+	if !has_cooked_item:
+		return ''
+
+	_reset_cooked_item()
+	has_cooked_item = false
+	cooked_item = ''
+	return ['generic', $CookedItem]
+
 func deposit_item(item: String) -> bool:
 	if container.size() + 1 > container_size:
 		emit_signal('stored_item', false)
@@ -22,6 +38,8 @@ func print_contents() -> String:
 	var contents: String = 'Cauldron'
 	if _is_full():
 		contents += ' (FULL): '
+	elif has_cooked_item:
+		contents += ' (' + cooked_item + ')'
 	elif _is_empty():
 		contents += ' (EMPTY)'
 	else:
@@ -36,11 +54,23 @@ func print_contents() -> String:
 	return contents
 
 ### Functionality, private
+
+func _finish_cooking() -> void:
+	_animate_cooked_food()
+	yield(get_tree().create_timer(.5), "timeout")
+	container = []
+	is_cooking = false
+	has_cooked_item = true
+	cooked_item = 'generic'
+	_update_cooking_status()
+	emit_signal('cooking_done', 'generic')
+
 func _update_cooking_status() -> void:
 	if container.size() > 0:
 		is_cooking = true
-		_start_animate_bubbles()
-		_animate_fire_in()
+		if container.size() == 1:
+			_start_animate_bubbles()
+			_animate_fire_in()
 	else:
 		is_cooking = false
 		_stop_animate_bubbles()
@@ -52,6 +82,9 @@ func _is_full() -> bool:
 func _is_empty() -> bool:
 	return container.size() == 0
 
+func _reset_cooked_item() -> void:
+	$CookedItem.hide()
+	$CookedItem.position = Vector2(0, -3.5)
 ### Animations
 func _start_animate_bubbles():
 	_reset_bubble_sprite()
@@ -78,11 +111,11 @@ func _start_animate_bubbles():
 
 func _stop_animate_bubbles():
 	_reset_bubble_sprite()
-	$BubbleTween.stop()
+	$BubbleTween.stop_all()
 
 func _reset_bubble_sprite():
 	$Bubbles.position = Vector2(0, -1.75)
-	$Bubbles.scale = Vector2(0.1, 0.1)
+	$Bubbles.scale = Vector2(0.01, 0.01)
 
 func _animate_fire_in():
 	$FireTweenIn.interpolate_property(
@@ -109,15 +142,28 @@ func _animate_fire_out():
 	$FireTweenOut.start()
 
 func _stop_animate_fire():
-	$FireTweenOut.stop()
-	$FireTweenIn.stop()
+	$FireTweenOut.stop_all()
+	$FireTweenIn.stop_all()
+	
+func _animate_cooked_food():
+	$CookedItem.show()	
+	$CookedItemTween.interpolate_property(
+		$CookedItem,
+		"position",
+		$CookedItem.position,
+		Vector2(0, -8),
+		1.0,
+		Tween.TRANS_LINEAR,
+		Tween.EASE_IN
+	)
+	$CookedItemTween.start()
 
 func _on_BubbleTween_tween_all_completed():
+	print_debug("finished bubbling")
 	_start_animate_bubbles()
 
 func _on_FireTweenIn_tween_completed(object, key):
 	_animate_fire_out()
-
 
 func _on_FireTweenOut_tween_completed(object, key):
 	_animate_fire_in()

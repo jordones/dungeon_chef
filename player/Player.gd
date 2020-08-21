@@ -4,6 +4,7 @@ signal moved
 signal targeted
 signal untargeted
 signal put
+signal pick_up
 
 var speed = 3
 var tile_size = 16
@@ -97,12 +98,25 @@ func interact() -> bool:
 						$HeldItem.set("texture", null)
 				'cauldron':
 					if is_holding:
+						if held_food_type == 'generic':
+							return false
 						emit_signal("put", held_food_type)
-
-						
+					else:
+						emit_signal('pick_up')
 		return true
 	print("player hit nothing")
 	return false
+
+func pick_up(name, item) -> bool:
+	$HeldItem.set("texture", item.texture)
+	$HeldItem.set("region_rect", item.region_rect)
+	yield(get_tree().create_timer(.5), "timeout")
+	if is_holding:
+		return false
+	is_holding = true
+	held_food_type = name
+	return true
+
 
 func _on_MoveTween_tween_completed(object, key):
 	can_move = true

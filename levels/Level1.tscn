@@ -51,7 +51,9 @@ region_enabled = true
 region_rect = Rect2( 560, 192, 16, 16 )
 
 [node name="UserInterface" parent="." instance=ExtResource( 5 )]
+[connection signal="pick_up" from="Player" to="." method="_on_Player_pick_up"]
 [connection signal="put" from="Player" to="." method="_on_Player_put"]
 [connection signal="targeted" from="Player" to="." method="_on_Player_targeted"]
 [connection signal="untargeted" from="Player" to="." method="_on_Player_untargeted"]
+[connection signal="cooking_done" from="Cauldron" to="." method="_on_Cauldron_cooking_done"]
 [connection signal="stored_item" from="Cauldron" to="Player" method="_on_Cauldron_stored_item"]
