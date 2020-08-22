@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://UserInterface/UserInterface.gd" type="Script" id=1]
 [ext_resource path="res://assets/m3x6.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/frame.png" type="Texture" id=3]
+[ext_resource path="res://assets/speech_bubble.png" type="Texture" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 extra_spacing_top = -6
@@ -40,7 +41,26 @@ custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.811765, 0.776471, 0.721569, 1 )
 text = "[]"
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="IconWrapper" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = 152.0
+margin_right = 24.0
+margin_bottom = 184.0
+custom_constants/margin_top = -14
+custom_constants/margin_left = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Frame" type="Sprite" parent="."]
 position = Vector2( 120, 208 )
 texture = ExtResource( 3 )
 region_rect = Rect2( 624, 224, 16, 16 )
+
+[node name="SpeechBubble" type="Sprite" parent="."]
+position = Vector2( 73, 208 )
+texture = ExtResource( 4 )
