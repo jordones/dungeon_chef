@@ -52,4 +52,5 @@ func _on_Player_pick_up():
 
 
 func _on_Cauldron_cooking_done():
+	print('done cooking')
 	$UserInterface.set_message($Cauldron.print_contents())

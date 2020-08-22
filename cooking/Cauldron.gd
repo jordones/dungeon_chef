@@ -3,11 +3,13 @@ extends Area2D
 signal stored_item
 signal cooking_done
 
+export (PackedScene) var Recipe
+
 var container = []
 var container_size: int = 4
 var is_cooking: bool = false
 var has_cooked_item: bool = false
-var cooked_item: String
+var cooked_item = null
 
 func _process(delta):
 	if _is_full():
@@ -18,10 +20,13 @@ func take_item():
 	if !has_cooked_item:
 		return ''
 
-	_reset_cooked_item()
+	#_reset_cooked_item()
 	has_cooked_item = false
-	cooked_item = ''
-	return ['generic', $CookedItem]
+	var temp_item = cooked_item
+	#remove_child(cooked_item)
+	cooked_item.hide()
+	cooked_item = null
+	return ['generic', temp_item]
 
 func deposit_item(item: String) -> bool:
 	if container.size() + 1 > container_size:
@@ -39,7 +44,7 @@ func print_contents() -> String:
 	if _is_full():
 		contents += ' (FULL): '
 	elif has_cooked_item:
-		contents += ' (' + cooked_item + ')'
+		contents += ' (' + str(cooked_item.effect_type) + '(' + str(cooked_item.effect_modifier) + ')' + ')'
 	elif _is_empty():
 		contents += ' (EMPTY)'
 	else:
@@ -56,14 +61,14 @@ func print_contents() -> String:
 ### Functionality, private
 
 func _finish_cooking() -> void:
-	_animate_cooked_food()
-	yield(get_tree().create_timer(.5), "timeout")
+	cooked_item = Recipe.instance()
+	cooked_item.setup(container)
+	cooked_item.position = Vector2(0, -3.5)
+	add_child(cooked_item)
+
 	container = []
-	is_cooking = false
-	has_cooked_item = true
-	cooked_item = 'generic'
 	_update_cooking_status()
-	emit_signal('cooking_done', 'generic')
+	_animate_cooked_food()
 
 func _update_cooking_status() -> void:
 	if container.size() > 0:
@@ -146,11 +151,11 @@ func _stop_animate_fire():
 	$FireTweenIn.stop_all()
 	
 func _animate_cooked_food():
-	$CookedItem.show()	
+	#cooked_food.show()	
 	$CookedItemTween.interpolate_property(
-		$CookedItem,
+		cooked_item,
 		"position",
-		$CookedItem.position,
+		cooked_item.position,
 		Vector2(0, -8),
 		1.0,
 		Tween.TRANS_LINEAR,
@@ -159,7 +164,6 @@ func _animate_cooked_food():
 	$CookedItemTween.start()
 
 func _on_BubbleTween_tween_all_completed():
-	print_debug("finished bubbling")
 	_start_animate_bubbles()
 
 func _on_FireTweenIn_tween_completed(object, key):
@@ -167,3 +171,8 @@ func _on_FireTweenIn_tween_completed(object, key):
 
 func _on_FireTweenOut_tween_completed(object, key):
 	_animate_fire_in()
+
+
+func _on_CookedItemTween_tween_completed(object, key):
+	has_cooked_item = true
+	emit_signal('cooking_done')
