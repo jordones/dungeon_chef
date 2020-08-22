@@ -164,7 +164,6 @@ func _animate_cooked_food():
 	$CookedItemTween.start()
 
 func _on_BubbleTween_tween_all_completed():
-	print_debug("finished bubbling")
 	_start_animate_bubbles()
 
 func _on_FireTweenIn_tween_completed(object, key):
