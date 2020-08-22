@@ -176,4 +176,4 @@ func _on_FireTweenOut_tween_completed(object, key):
 
 func _on_CookedItemTween_tween_completed(object, key):
 	has_cooked_item = true
-	emit_signal('cooking_done', cooked_item)
+	emit_signal('cooking_done')
