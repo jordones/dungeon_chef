@@ -149,7 +149,6 @@ func _stop_animate_fire():
 	$FireTweenIn.stop_all()
 	
 func _animate_cooked_food():
-	#cooked_food.show()	
 	$CookedItemTween.interpolate_property(
 		cooked_item,
 		"position",
