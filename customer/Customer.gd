@@ -39,6 +39,7 @@ var customer_sprites = [
 
 var effect_requested: String
 var modifier_needed: float
+var customer_name: String = 'Knight'
 
 func set_health_bar(effect_type: String, value: float) -> void:
 	var sprites = health_sprites if not effect_type == 'mana' else mana_sprites
@@ -84,21 +85,25 @@ func receive_item(item) -> void:
 	if modifier_needed >= ui_sprites.size():
 		$Sprite.hide()
 		$DeathSprite.show()
+		emit_signal('dialogue', 'The ' + customer_name + ' has died.')		
 		emit_signal('died')
 	# Customer was helped
 	if modifier_needed == 0:
+		emit_signal('dialogue', 'You saved the ' + customer_name + '.')		
 		emit_signal('saved')
 
 func randomize_customer():
 	rand.randomize()
 	var random_key = rand.randi_range(0, customer_sprites.size() - 1)
 	$Sprite.region_rect = customer_sprites[random_key]['sprite']
-	var name = customer_sprites[random_key]['name']
+	$Sprite.show()
+	$DeathSprite.hide()
+	customer_name = customer_sprites[random_key]['name']
 	effect_requested = 'health' if not rand.randi_range(0, 1) else 'mana'
-	var rand_modifier = rand.randi_range(0, ui_sprites.size())
+	var rand_modifier = rand.randi_range(0, ui_sprites.size() - 1)
 	modifier_needed = rand_modifier if not rand.randi_range(0, 1) else (rand_modifier + 0.5)
 	set_health_bar(effect_requested, modifier_needed)
-	emit_signal('dialogue', name + ' has arrived.')
+	emit_signal('dialogue', customer_name + ' has arrived.')
 
 func _on_Player_delivered(item):
 	if item:

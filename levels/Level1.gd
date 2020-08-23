@@ -23,7 +23,7 @@ func spawn_objects():
 				$Cauldron.position = pos
 
 func set_up_customer():
-	#$Player.can_move = false	
+	$Player.can_move = false	
 	yield(get_tree().create_timer(3), "timeout")	
 	$Customer.set_health_bar('mana', 3.0)
 	$Customer.show()
@@ -79,10 +79,10 @@ func _on_Customer_dialogue(message):
 
 
 func _on_Customer_died():
-	$UserInterface.set_message('You\'ve killed him!')
+	#$UserInterface.set_message('You\'ve killed him!')
 	new_random_customer()
 
 
 func _on_Customer_saved():
-	$UserInterface.set_message('You saved the hero!')
+	#$UserInterface.set_message('You saved the hero!')
 	new_random_customer()
