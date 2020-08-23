@@ -42,6 +42,7 @@ custom_colors/font_color = Color( 0.811765, 0.776471, 0.721569, 1 )
 text = "[]"
 
 [node name="IconWrapper" type="MarginContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -62,5 +63,6 @@ texture = ExtResource( 3 )
 region_rect = Rect2( 624, 224, 16, 16 )
 
 [node name="SpeechBubble" type="Sprite" parent="."]
+visible = false
 position = Vector2( 73, 208 )
 texture = ExtResource( 4 )

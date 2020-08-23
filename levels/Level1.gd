@@ -7,6 +7,7 @@ var cauldron = []
 func _ready():
 	$Items.hide()
 	spawn_objects()
+	set_up_customer()
 
 func spawn_objects():
 	for cell in items.get_used_cells():
@@ -22,12 +23,19 @@ func spawn_objects():
 			'cauldron':
 				$Cauldron.position = pos
 
+func set_up_customer():
+	#yield(get_tree().create_timer(5), "timeout")
+	$Customer.set_health_bar('mana', 4.0)
+	$Customer.show()
+
 func _on_Player_targeted(target: Vector2, label: String):
 	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
 	$Cursor.show()
 	
 	if label == 'cauldron':
 		$UserInterface.set_message($Cauldron.print_contents())
+	elif label == 'conveyor_belt':
+		$UserInterface.set_message('deliver food')
 	else:
 		$UserInterface.set_message(label)
 
