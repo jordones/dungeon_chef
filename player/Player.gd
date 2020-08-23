@@ -40,7 +40,7 @@ func _process(delta):
 
 func move(dir: String) -> bool:
 	facing = dir
-	update_cursor()	
+	update_cursor()
 	if raycasts[facing].is_colliding():
 		return false
 	
@@ -68,8 +68,8 @@ func update_cursor():
 			var point = collision_point - raycasts[facing].get_collision_normal() * safe_margin
 			var tile_pos = colliding_object.world_to_map(point)
 			var id = colliding_object.get_cellv(tile_pos)
-			var type = colliding_object.tile_set.tile_get_name(id)
-			emit_signal('targeted', tile_pos, type)
+			var _type = colliding_object.tile_set.tile_get_name(id)
+			emit_signal('targeted', tile_pos, _type)
 	else:
 		emit_signal('untargeted')
 	
@@ -104,7 +104,6 @@ func interact() -> bool:
 					else:
 						emit_signal('pick_up')
 		return true
-	print("player hit nothing")
 	return false
 
 func pick_up(name, item) -> bool:

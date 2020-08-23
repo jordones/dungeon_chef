@@ -23,15 +23,12 @@ func set_health_bar(effect_type: String, value: float) -> void:
 	var sprites = health_sprites if not effect_type == 'mana' else mana_sprites
 	var max_spaces = ui_sprites.size()
 	var i = floor(value)
-	print("i  == " + str(i))
 	# Calculate full sprites
 	if i > 0:
 		for j in range(0, i):
-			print("filling space: " + str(j))
 			ui_sprites[j].region_rect = sprites['full']
 	# Fill the rest with empty sprites
 	for k in range(i, max_spaces):
-		print("emptying space: " + str(k))
 		ui_sprites[k].region_rect = sprites['empty']
 	# Adjust half sprite if necessary
 	if fmod(value, 1) == 0.5:

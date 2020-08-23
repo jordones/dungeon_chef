@@ -2,7 +2,6 @@ extends Node2D
 
 onready var items = $Items
 onready var interactive = $Interactive
-var cauldron = []
 
 func _ready():
 	$Items.hide()
@@ -13,7 +12,6 @@ func spawn_objects():
 	for cell in items.get_used_cells():
 		var id = items.get_cellv(cell)
 		var type = items.tile_set.tile_get_name(id)
-		print(type)
 		
 		var pos = items.map_to_world(cell) + items.cell_size / 2
 		match type:
@@ -24,9 +22,22 @@ func spawn_objects():
 				$Cauldron.position = pos
 
 func set_up_customer():
-	#yield(get_tree().create_timer(5), "timeout")
+	$Player.can_move = false	
+	yield(get_tree().create_timer(3), "timeout")	
 	$Customer.set_health_bar('mana', 4.0)
 	$Customer.show()
+	$UserInterface.set_message('A Knight appears.')
+	yield(get_tree().create_timer(3), "timeout")	
+	$UserInterface.set_message('He requests a potion.')	
+	yield(get_tree().create_timer(3), "timeout")	
+	$UserInterface.set_message('Press SPACE to interact.')	
+	yield(get_tree().create_timer(3), "timeout")	
+	$UserInterface.set_message('Arrows to move.')	
+	yield(get_tree().create_timer(3), "timeout")	
+	$UserInterface.set_message('Mix in the cauldron.')	
+	yield(get_tree().create_timer(3), "timeout")	
+	$UserInterface.set_message('Go now, Dungeon Chef.')	
+	$Player.can_move = true
 
 func _on_Player_targeted(target: Vector2, label: String):
 	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
@@ -39,18 +50,13 @@ func _on_Player_targeted(target: Vector2, label: String):
 	else:
 		$UserInterface.set_message(label)
 
-
-
 func _on_Player_untargeted():
 	$Cursor.hide()
 	$UserInterface.set_message('')
 
 func _on_Player_put(item):
-	print('player deposited ' + str(item) + ' in the cauldron')
-	#cauldron.append(item)
 	$Cauldron.deposit_item(item)
 	$UserInterface.set_message($Cauldron.print_contents())
-	#print(cauldron)
 
 
 func _on_Player_pick_up():
@@ -60,5 +66,4 @@ func _on_Player_pick_up():
 
 
 func _on_Cauldron_cooking_done():
-	print('done cooking')
 	$UserInterface.set_message($Cauldron.print_contents())
