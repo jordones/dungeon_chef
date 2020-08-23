@@ -26,7 +26,6 @@ func _ready():
 		Tween.TRANS_LINEAR,
 		Tween.EASE_IN
 	)
-	#$Tween.start()
 
 func setup(ingredients: Array):
 	match ingredients[0]:

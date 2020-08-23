@@ -5,6 +5,7 @@ signal targeted
 signal untargeted
 signal put
 signal pick_up
+signal delivered
 
 var speed = 3
 var tile_size = 16
@@ -40,7 +41,7 @@ func _process(delta):
 
 func move(dir: String) -> bool:
 	facing = dir
-	update_cursor()	
+	update_cursor()
 	if raycasts[facing].is_colliding():
 		return false
 	
@@ -68,8 +69,8 @@ func update_cursor():
 			var point = collision_point - raycasts[facing].get_collision_normal() * safe_margin
 			var tile_pos = colliding_object.world_to_map(point)
 			var id = colliding_object.get_cellv(tile_pos)
-			var type = colliding_object.tile_set.tile_get_name(id)
-			emit_signal('targeted', tile_pos, type)
+			var _type = colliding_object.tile_set.tile_get_name(id)
+			emit_signal('targeted', tile_pos, _type)
 	else:
 		emit_signal('untargeted')
 	
@@ -103,11 +104,21 @@ func interact() -> bool:
 						emit_signal("put", held_food_type)
 					else:
 						emit_signal('pick_up')
+				'conveyor_belt':
+					if is_holding:
+						if held_food_type == 'generic':
+							can_interact = false
+							is_holding = false
+							held_food_type = null
+							emit_signal("delivered", heldItem)
+							heldItem = null
+							$HeldItem.set("texture", null)
+							can_interact = true
 		return true
-	print("player hit nothing")
 	return false
 
 func pick_up(name, item) -> bool:
+	heldItem = item
 	$HeldItem.set("texture", item.texture)
 	$HeldItem.set("region_rect", item.region_rect)
 	yield(get_tree().create_timer(.5), "timeout")
