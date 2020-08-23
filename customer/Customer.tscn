@@ -43,3 +43,9 @@ region_rect = Rect2( 640, 160, 16, 16 )
 [node name="Sprite2" type="Sprite" parent="."]
 position = Vector2( 40, -8 )
 texture = ExtResource( 2 )
+
+[node name="DeathSprite" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 464, 96, 16, 16 )

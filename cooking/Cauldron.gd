@@ -20,10 +20,8 @@ func take_item():
 	if !has_cooked_item:
 		return ''
 
-	#_reset_cooked_item()
 	has_cooked_item = false
 	var temp_item = cooked_item
-	#remove_child(cooked_item)
 	cooked_item.hide()
 	cooked_item = null
 	return ['generic', temp_item]

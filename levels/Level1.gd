@@ -4,6 +4,7 @@ onready var items = $Items
 onready var interactive = $Interactive
 
 func _ready():
+	randomize()
 	$Items.hide()
 	spawn_objects()
 	set_up_customer()
@@ -22,9 +23,9 @@ func spawn_objects():
 				$Cauldron.position = pos
 
 func set_up_customer():
-	$Player.can_move = false	
+	#$Player.can_move = false	
 	yield(get_tree().create_timer(3), "timeout")	
-	$Customer.set_health_bar('mana', 4.0)
+	$Customer.set_health_bar('mana', 3.0)
 	$Customer.show()
 	$UserInterface.set_message('A Knight appears.')
 	yield(get_tree().create_timer(3), "timeout")	
@@ -38,6 +39,10 @@ func set_up_customer():
 	yield(get_tree().create_timer(3), "timeout")	
 	$UserInterface.set_message('Go now, Dungeon Chef.')	
 	$Player.can_move = true
+	
+func new_random_customer():
+	yield(get_tree().create_timer(3), "timeout")	
+	$Customer.randomize_customer()
 
 func _on_Player_targeted(target: Vector2, label: String):
 	$Cursor.position = interactive.map_to_world(target) + interactive.cell_size / 2
@@ -67,3 +72,17 @@ func _on_Player_pick_up():
 
 func _on_Cauldron_cooking_done():
 	$UserInterface.set_message($Cauldron.print_contents())
+
+
+func _on_Customer_dialogue(message):
+	$UserInterface.set_message(message)
+
+
+func _on_Customer_died():
+	$UserInterface.set_message('You\'ve killed him!')
+	new_random_customer()
+
+
+func _on_Customer_saved():
+	$UserInterface.set_message('You saved the hero!')
+	new_random_customer()

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://UserInterface/UserInterface.gd" type="Script" id=1]
 [ext_resource path="res://assets/m3x6.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/frame.png" type="Texture" id=3]
 [ext_resource path="res://assets/speech_bubble.png" type="Texture" id=4]
+[ext_resource path="res://assets/colored_transparent_packed.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 extra_spacing_top = -6
@@ -66,3 +67,80 @@ region_rect = Rect2( 624, 224, 16, 16 )
 visible = false
 position = Vector2( 73, 208 )
 texture = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 20, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 608, 288, 16, 16 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 26, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 672, 304, 16, 16 )
+
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 32, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 560, 304, 16, 16 )
+
+[node name="Sprite4" type="Sprite" parent="."]
+position = Vector2( 38, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 656, 288, 16, 16 )
+
+[node name="Sprite5" type="Sprite" parent="."]
+position = Vector2( 44, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 624, 288, 16, 16 )
+
+[node name="Sprite6" type="Sprite" parent="."]
+position = Vector2( 50, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 576, 304, 16, 16 )
+
+[node name="Sprite7" type="Sprite" parent="."]
+position = Vector2( 56, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 560, 304, 16, 16 )
+
+[node name="Sprite8" type="Sprite" parent="."]
+position = Vector2( 64, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 592, 288, 16, 16 )
+
+[node name="Sprite9" type="Sprite" parent="."]
+position = Vector2( 70, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 672, 288, 16, 16 )
+
+[node name="Sprite10" type="Sprite" parent="."]
+position = Vector2( 76, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 624, 288, 16, 16 )
+
+[node name="Sprite11" type="Sprite" parent="."]
+position = Vector2( 82, 12 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 640, 288, 16, 16 )

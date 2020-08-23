@@ -5,6 +5,7 @@ signal targeted
 signal untargeted
 signal put
 signal pick_up
+signal delivered
 
 var speed = 3
 var tile_size = 16
@@ -103,10 +104,21 @@ func interact() -> bool:
 						emit_signal("put", held_food_type)
 					else:
 						emit_signal('pick_up')
+				'conveyor_belt':
+					if is_holding:
+						if held_food_type == 'generic':
+							can_interact = false
+							is_holding = false
+							held_food_type = null
+							emit_signal("delivered", heldItem)
+							heldItem = null
+							$HeldItem.set("texture", null)
+							can_interact = true
 		return true
 	return false
 
 func pick_up(name, item) -> bool:
+	heldItem = item
 	$HeldItem.set("texture", item.texture)
 	$HeldItem.set("region_rect", item.region_rect)
 	yield(get_tree().create_timer(.5), "timeout")
