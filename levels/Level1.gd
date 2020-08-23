@@ -79,10 +79,8 @@ func _on_Customer_dialogue(message):
 
 
 func _on_Customer_died():
-	#$UserInterface.set_message('You\'ve killed him!')
 	new_random_customer()
 
 
 func _on_Customer_saved():
-	#$UserInterface.set_message('You saved the hero!')
 	new_random_customer()
